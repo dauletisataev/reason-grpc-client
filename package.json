@@ -1,0 +1,28 @@
+{
+  "name": "reason-grpc-try-2",
+  "version": "0.1.0",
+  "scripts": {
+    "gen": "ocaml-protoc -bs -ml_out src src/helloworld.proto",
+    "gen:js": "bash tools/gen_protocols.sh",
+    "clean": "bsb -clean-world",
+    "build": "bsb -make-world",
+    "watch": "bsb -make-world -w",
+    "start": "node client-server.js"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "^6.2.1",
+    "grpc-web": "^1.2.1",
+    "express": "^4.17.1",
+    "google-protobuf": "^3.14.0",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
+  },
+  "dependencies": {
+    "bs-ocaml-protoc-json": "^0.1.3"
+  }
+}
