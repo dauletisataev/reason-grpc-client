@@ -48,27 +48,28 @@ module Buhta = struct
   end
   and EchoRequest : sig
     val name': unit -> string
-    type t = string 
-    val make : ?message:string -> unit -> t
+    type t = { message: string; name: string } 
+    val make : ?message:string -> ?name:string -> unit -> t
     val to_proto: t -> Runtime'.Writer.t
     val from_proto: Runtime'.Reader.t -> (t, [> Runtime'.Result.error]) result
   end = struct 
     let name' () = "echo.buhta.EchoRequest"
-    type t = string
+    type t = { message: string; name: string }
     let make =
-      fun ?message () -> 
+      fun ?message ?name () -> 
       let message = match message with Some v -> v | None -> {||} in
-      message
+      let name = match name with Some v -> v | None -> {||} in
+      { message; name }
     
     let to_proto =
-      let apply = fun ~f:f' message -> f' [] message in
-      let spec = Runtime'.Serialize.C.( basic (1, string, proto3) ^:: nil ) in
+      let apply = fun ~f:f' { message; name } -> f' [] message name in
+      let spec = Runtime'.Serialize.C.( basic (1, string, proto3) ^:: basic (2, string, proto3) ^:: nil ) in
       let serialize = Runtime'.Serialize.serialize [] (spec) in
       fun t -> apply ~f:serialize t
     
     let from_proto =
-      let constructor = fun _extensions message -> message in
-      let spec = Runtime'.Deserialize.C.( basic (1, string, proto3) ^:: nil ) in
+      let constructor = fun _extensions message name -> { message; name } in
+      let spec = Runtime'.Deserialize.C.( basic (1, string, proto3) ^:: basic (2, string, proto3) ^:: nil ) in
       let deserialize = Runtime'.Deserialize.deserialize [] spec constructor in
       fun writer -> deserialize writer |> Runtime'.Result.open_error
     

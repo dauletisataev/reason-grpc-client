@@ -1,22 +1,10 @@
-/*let greaterClient = GreaterService.make("http://localhost:8080");
-
-let helloRequest = HelloRequest.make();
-HelloRequest.setName(helloRequest, "asdf");
-GreaterService.sayHello(greaterClient, helloRequest, () => ());
-
-let echoServiceClient = EchoService.make("http://localhost:8080");
-
-let echoRequest = EchoRequest.make();
-EchoRequest.setMessage(echoRequest, "asdf");
-EchoService.echo(echoServiceClient, echoRequest);
-
-*/
 open Echo.Buhta;
 
+// *** Don't pay attention: just testing
 let onRequest = (request) => {
     let (encode, decode) = Ocamlprotocplugin.Service.make_client_functions(EchoService.echo)
 
-    let proto_request = encode(request) |> Ocamlprotocplugin.Writer.contents;
+    let proto_request = request |> encode |> Ocamlprotocplugin.Writer.contents;
 
     let proto_reply = {
         let (decode, encode) = Ocamlprotocplugin.Service.make_service_functions(EchoService.echo);
@@ -35,8 +23,18 @@ let onRequest = (request) => {
         | Error(e) => failwith(Printf.sprintf("Could not reply request: %s", (Ocamlprotocplugin.Result.show_error(e))));
 }
 
-let echoRequest = EchoRequest.make(~message="asdfsad", ());
+let echoRequest = EchoRequest.make(~message="hii", ~name="dake", ());
 
-let reply = onRequest(echoRequest);
-Js.log2("reply: ", reply);
+//let reply = onRequest(echoRequest);0
+let callback = [%bs.raw {|
+    (err, response) => {
+    if (err) {
+        console.log(err);
+    }
+    else
+        console.log(response.getMessage());
+}
+|}];
 
+let echoServiceClient = EchoServiceClient.make("http://localhost:8080");
+EchoServiceClient.echo(echoServiceClient, SerializableObject.make(echoRequest), Js.Nullable.null, callback);

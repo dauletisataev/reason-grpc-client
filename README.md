@@ -1,16 +1,22 @@
-
-
-# Build
-```
-npm run build
-```
-
-# Watch
+# 1. Watch
 
 ```
-npm run watch
+yarn watch
 ```
 
+# 2. Build
+### each time code should be bundled to send requests.
+```
+yarn build
+```
 
-# Editor
-If you use `vscode`, Press `Windows + Shift + B` it will build automatically
+# 3. Start
+```
+yarn start
+```
+
+# Generate protocols from `src/protoecho.proto` to `src/proto/`
+```
+yarn gen:protocol
+```
+> make sure to have `ocaml-protoc-plugin` installed

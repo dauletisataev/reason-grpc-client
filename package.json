@@ -2,8 +2,7 @@
   "name": "reason-grpc-try-2",
   "version": "0.1.0",
   "scripts": {
-    "gen": "bash tools/gen_ml.sh",
-    "gen:js": "bash tools/gen_service_stub.sh",
+    "gen:protocol": "bash tools/gen_protocols.sh",
     "clean": "bsb -clean-world",
     "build": "bsb -make-world && npx webpack",
     "watch": "bsb -make-world -w",
