@@ -1,7 +1,15 @@
 open Echo.Buhta;
-
+open Ocamlprotocplugin.Runtime.Runtime';
 [@bs.deriving abstract]
-type payload = {
+type t = {
   serializeBinary: unit => string,
 };
-let make: EchoRequest.t => payload = request => payload(~serializeBinary=() => request |> EchoRequest.to_proto |> Ocamlprotocplugin.Writer.contents);
+
+// module EchoRequest: Runtime'.Service.Message with type t = string = {
+//     type t = string;
+// };
+
+let make = (
+      proto: Writer.t
+    ) => t(~serializeBinary=() => proto |> Ocamlprotocplugin.Writer.contents);
+      

@@ -37,4 +37,4 @@ let callback = [%bs.raw {|
 |}];
 
 let echoServiceClient = EchoServiceClient.make("http://localhost:8080");
-EchoServiceClient.echo(echoServiceClient, SerializableObject.make(echoRequest), Js.Nullable.null, callback);
+EchoServiceClient.echo(echoServiceClient, SerializableObject.make(echoRequest |> EchoRequest.to_proto), Js.Nullable.null, callback);
