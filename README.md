@@ -5,7 +5,7 @@ yarn watch
 ```
 
 # 2. Build
-### each time code should be bundled to send requests.
+> each time code should be bundled to be able to send requests.
 ```
 yarn build
 ```
@@ -15,7 +15,7 @@ yarn build
 yarn start
 ```
 
-# Generate protocols from `src/protoecho.proto` to `src/proto/`
+## Generate protocols from `src/protoecho.proto` to `src/proto/`
 ```
 yarn gen:protocol
 ```
